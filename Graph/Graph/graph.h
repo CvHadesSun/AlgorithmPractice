@@ -1,14 +1,29 @@
-# Graph
+//
+//  graph.h
+//  Graph
+//
+//  Created by hades on 2022/1/24.
+//
 
-[toc]
+#ifndef graph_h
+#define graph_h
 
+#include <vector>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
 
+using namespace std;
+// define graph base structure.
 
-## Definition
+//
+template <class T1,class T2>
+struct Edge;
 
-### base structure
+template <class T1,class T2>
+struct Node;
 
-```c++
 template <class T1,class T2>
 struct Edge{
     //
@@ -55,11 +70,8 @@ public:
     Graph():graphNodes({}),graphEdges({}){};
 };
 
-```
 
-### Init from matrix
 
-```c++s
 // init the graph from matrix
 /*
  begin  end weight
@@ -108,19 +120,7 @@ void initGraphFromMatrix(Graph<T1, T2> * graph,const vector<Matrix<T1, T2>*> mat
         graph->graphEdges.insert(edge);
     }
 }
-```
 
-
-
-## Algorithm
-
-### BFS 
-
-// graph BFS
- 从开始节点，访问的时候不断的将其没有被访问过的邻居节点放入队列，
-并且要记录已经被访问过的节点，直到图中所有的节点被访问完为止
-
-```c++
 // graph BFS
 /*
  从开始节点，访问的时候不断的将其邻居节点放入队列，
@@ -154,16 +154,6 @@ void graphBFS(Graph<T1, T2> * G){
     
     
 }
-```
-
-### DFS
-
-// graph DFS
-
- 从开始节点，找到一个没有被访问的邻居节点入栈，入栈时先入栈当前节点，然后入栈
-邻居节点，直到栈为空为止
-
-```c++
 
 // graph DFS
 
@@ -197,17 +187,7 @@ void graphDFS(Graph<T1, T2> * G){
     }
     cout<<endl;
 }
-```
 
-
-
-#### 拓扑排序
-
-// 拓扑排序
-
- 找到入堵为0的节点，然后作为开始的节点，并且记录到队列中，使用一个map来记录所有节点的入度，用于更新入度，去掉队首节点(入度为0)和其他节点的联系：就是将它邻居节点的入度减1，然后找到入度为0的,并且入栈，作为排序的下一个节点，不断循环直到队列为空
-
-```c++
 // 拓扑排序
 /*
  找到入堵为0的节点，然后作为开始的节点，并且记录到队列中，
@@ -243,15 +223,7 @@ void graphTopologySort(Graph<T1, T2>* G,vector<Node<T1,T2>*> & res){
     }
     cout<<endl;
 }
-```
 
-### 最小生成树
-
-#### k-algorithm
-
- 初始化每个节点都是一个集合，找到最小权重的边， 如果边的两个节点是一个集合，则不做操作，否则就合并两个节点所在集合为一个合集，并且记录这个边， 然后找到次小的边，如此类推，直到没有可选择的边为止
-
-```c++
 // graph k-algorithm （生成最小生成树）
 
 /*
@@ -317,15 +289,7 @@ void graphKAlgorithm(Graph<T1, T2>* G,vector<Edge<T1, T2>*> & res){
     
     
 }
-```
 
-
-
-#### Prim-algorithm
-
- 以节点为标准，将所有的节点遍历访问，只访问一次，每次访问的下一个节点为边权重最小的那个end节点，这样带来的代价是最小的，并且访问节点之后要把其所有的边记录用来寻找下一个访问节点。
-
-```c++
 // prim algorithm (生成最小生成树)
 /*
  以节点为标准，将所有的节点遍历访问，只访问一次，
@@ -364,23 +328,7 @@ void graphPrimAlgorithm(Graph<T1, T2> * G,vector<Edge<T1, T2>*> & res){
     }
     cout<<endl;
 }
-```
 
-
-
-
-
-
-
-### DijkstraAlgorithm（最短路径算法）
-
-算法描述：
-
-​	给定开始节点，返回开始节点到图中所有节点的距离，要求：图是无向图，同时图中没有和为负值的环路的存在
-
-#### 经典实现
-
-```c++
 // dijsktra algorithm （最短路径算法）
 
 /*
@@ -431,14 +379,10 @@ void djikstraAlgorithm(Graph<T1,T2>* G,Node<T1, T2>* beginNode,map<Node<T1, T2>*
             minNode = findMinDistNode(res, lock);
         }
     }
-}  
-```
+}
 
-#### 一种改写堆的优化
 
-思路：首先在上述经典实现过程中，每次需要在为被锁定的记录中找到最小的记录，并且更新未被锁定的所有的节点的记录，如果res使用小根堆的方式来实现，只能找到最小的记录，并不能实现更新的操作，所以可以将上述代码实现中用来负责记录的res，使用改写的堆来实现。
 
-```c++
 // 改写堆来优化
 
 template <class T1,class T2>
@@ -548,9 +492,6 @@ void dijkstraAlgorithmV2(Graph<T1, T2>* G,Node<T1, T2>* beginNode,map<Node<T1,T2
     }
     res= heap->getRes();
 }
-```
-
-
-
+#endif /* graph_h */
 
 
